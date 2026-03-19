@@ -2,7 +2,7 @@
 layout: api-docs
 page_title: "How to Access Production Claims Data"
 seo_title: "Access Production Claims Data | AB2D Medicare API"
-description: "Prescription Drug Plan sponsors can learn how to access Medicare patients’ Parts A & B claims data in the AB2D production environment."
+description: "Prescription Drug Plan sponsors can learn how to access Medicare patients' Parts A & B claims data in the AB2D production environment."
 permalink: /access-production-claims-data
 in-page-nav: true
 ---
@@ -10,6 +10,17 @@ in-page-nav: true
 # {{ page.page_title }}
 
 The production environment offers access to enrollee claims data, which contains [Protected Health Information (PHI)](https://www.hhs.gov/answers/hipaa/what-is-phi/index.html). In order to get enrollee claims data, Prescription Drug Plan (PDP) sponsors must have completed the steps for [production access]({{ '/production-access' | relative_url }}) beforehand.
+
+{% capture prereqAlert %}
+Before you begin, make sure you have:
+<ul class="margin-bottom-0">
+  <li>Completed <a href="{{ '/production-access' | relative_url }}">attestation and onboarding</a></li>
+  <li>Received production credentials from the AB2D team</li>
+  <li>Provided your static IP address(es) to the AB2D team</li>
+  <li>Successfully <a href="{{ '/access-sandbox-data' | relative_url }}">retrieved sandbox data</a></li>
+</ul>
+{% endcapture %}
+{% include alert.html variant="warning" text=prereqAlert classNames="measure-6" %}
 
 {% capture versionAlertHeading %}
   <p class="usa-alert__heading text-bold">
@@ -26,17 +37,59 @@ The production environment offers access to enrollee claims data, which contains
 {% endcapture %}
 {% include alert.html variant="info" text=versionAlert heading=versionAlertHeading classNames="measure-6" %}
 
-## Instructions
+## Production workflow
 
 The production and sandbox environments use the same endpoints and workflow. You can [follow the same steps as you did in the sandbox]({{ '/access-sandbox-data' | relative_url }}) for production data.
 
-You’ll still need [a bearer token]({{ '/get-a-bearer-token' | relative_url }}) to call the API, but use the production identity provider (idm.cms.gov), production URL (api.ab2d.cms.gov), and credentials issued by the AB2D team instead.
+You'll still need [a bearer token]({{ '/get-a-bearer-token' | relative_url }}) to call the API, but use the production identity provider (idm.cms.gov), production URL (api.ab2d.cms.gov), and credentials issued by the AB2D team instead.
+
+### Endpoints
 
 - Start a job: `GET /api/v2/fhir/Patient/$export`
-- Retrieve metadata: `GET /api/v2/fhir/metadata`
-- Cancel job: `DELETE /api/v2/fhir/Job/{job_uuid}/$status`
 - Check the job status: `GET /api/v2/fhir/Job/{job_uuid}/$status`
-- Download files: `GET/api/v2/fhir/Job/{job_uuid}/file/{file_name}`
+- Download files: `GET /api/v2/fhir/Job/{job_uuid}/file/{file_name}`
+- Cancel job: `DELETE /api/v2/fhir/Job/{job_uuid}/$status`
+- Retrieve metadata: `GET /api/v2/fhir/metadata`
+
+### Key differences from the sandbox
+
+<table class="usa-table usa-table--borderless">
+  <caption class="usa-sr-only">Differences between sandbox and production environments</caption>
+  <thead>
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">Sandbox</th>
+      <th scope="col">Production</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">URL</th>
+      <td>sandbox.ab2d.cms.gov</td>
+      <td>api.ab2d.cms.gov</td>
+    </tr>
+    <tr>
+      <th scope="row">Identity provider</th>
+      <td>test.idp.idm.cms.gov</td>
+      <td>idm.cms.gov</td>
+    </tr>
+    <tr>
+      <th scope="row">Data</th>
+      <td>Synthetic claims data</td>
+      <td>Real Medicare enrollee claims data (PHI)</td>
+    </tr>
+    <tr>
+      <th scope="row">IP restrictions</th>
+      <td>None</td>
+      <td>Static IP allowlist required</td>
+    </tr>
+    <tr>
+      <th scope="row">Credentials</th>
+      <td>Publicly available test credentials</td>
+      <td>Organization-specific credentials from AB2D team</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Job expiration
 
@@ -47,6 +100,10 @@ Job IDs and file URLs expire after 72 hours or 6 downloads. If it takes more tha
 Files are in NDJSON format, where each line is a Medicare claim written in JSON. The file naming standard uses a contract identifier and number to indicate sequence (e.g., Z123456_0001.ndjson).
 
 You can optionally download files in gzip format and decompress (unzip) them afterward into NDJSON. Large data files require adequate storage and a database to process the claims received.
+
+## Incremental export model
+
+Incremental exports of data, ideally at a bi-weekly frequency, reduce data duplication and speed up job times. This allows you to request newly updated data that you haven't downloaded since your last export. [Learn more about the incremental export model.]({{ '/filter-claims-data-v2' | relative_url }}#incremental-export-model)
 
 ## Sample client scripts
 
@@ -117,7 +174,7 @@ R4
 {% include copy_snippet.html code=curlSnippet language="shell" can_copy=true %}
     </li>
 
-    <li>Verify that a file named “jobId.txt” was created.</li>
+    <li>Verify that a file named "jobId.txt" was created.</li>
 </ol>
 
 #### III. Check the job status
@@ -159,7 +216,7 @@ $AUTH_FILE=C:\users\abcduser\credentials_Z123456_base64.txt
 {% include copy_snippet.html code=curlSnippet language="shell" can_copy=true %}
     </li>
     <li>
-        Set the authentication URL as AB2D’s production  identity provider:
+        Set the authentication URL as AB2D's production  identity provider:
 {% capture curlSnippet %}{% raw %}
 $AUTHENTICATION_URL='https://idm.cms.gov/oauth2/aus2ytanytjdaF9cr297/v1/token'
 {% endraw %}{% endcapture %}
@@ -205,7 +262,7 @@ Download the files into your current directory.
 
 ### Python client
 
-Download a ZIP file of the [Python API repository](https://github.com/CMSgov/ab2d-sample-client-python) or [learn how to clone it](https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/cloning-a-repository). Then, open a terminal and verify the file’s location in your home directory with the `dir` or `ls` command. You should see the job-cli.py script and a README. Make sure you have at least Python 3.6 and PIP3 [installed on your system](https://realpython.com/installing-python/).
+Download a ZIP file of the [Python API repository](https://github.com/CMSgov/ab2d-sample-client-python) or [learn how to clone it](https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/cloning-a-repository). Then, open a terminal and verify the file's location in your home directory with the `dir` or `ls` command. You should see the job-cli.py script and a README. Make sure you have at least Python 3.6 and PIP3 [installed on your system](https://realpython.com/installing-python/).
 
 #### I. Prepare environment variables
 
@@ -268,14 +325,14 @@ python --version
             <li>
                 <p>Linux/Mac</p>
 {% capture curlSnippet %}{% raw %}
-python job-cli.py -prod --auth $AUTH_FILE --directory $DIRECTORY --since ‘2020-05-01T00:00:00.000-05:00’ --fhir R4 --only_start
+python job-cli.py -prod --auth $AUTH_FILE --directory $DIRECTORY --since '2020-05-01T00:00:00.000-05:00' --fhir R4 --only_start
 {% endraw %}{% endcapture %}
 {% include copy_snippet.html code=curlSnippet language="shell" can_copy=true %}
             </li>
             <li>
                 <p>Windows</p>
 {% capture curlSnippet %}{% raw %}
-python job-cli.py -prod --auth %AUTH_FILE% --directory %DIRECTORY% --since ‘2020-05-01T00:00:00.000-05:00’ --fhir R4 --only_start
+python job-cli.py -prod --auth %AUTH_FILE% --directory %DIRECTORY% --since '2020-05-01T00:00:00.000-05:00' --fhir R4 --only_start
 {% endraw %}{% endcapture %}
 {% include copy_snippet.html code=curlSnippet language="shell" can_copy=true %}
             </li>
@@ -390,11 +447,7 @@ dir %TARGET_DIR%\*.ndjson
 
 ## Clean up your directory
 
-After you download your files, clean up your directory as needed. You can move the NDJSON files to another directory and remove script-generated files (e.g., “jobID.txt”). If the job is re-run, the new files may interfere and overwrite the old files.
-
-## Incremental export model
-
-Incremental exports of data, ideally at a bi-weekly frequency, reduce data duplication and speed up job times. This allows you to request newly updated data that you haven’t downloaded since your last export. [Learn more about the incremental export model.]({{ '/filter-claims-data-v2' | relative_url }}#incremental-export-model)
+After you download your files, clean up your directory as needed. You can move the NDJSON files to another directory and remove script-generated files (e.g., "jobID.txt"). If the job is re-run, the new files may interfere and overwrite the old files.
 
 ## Troubleshooting
 
@@ -403,11 +456,15 @@ Review our [Troubleshooting Guide]({{ '/troubleshooting-guide' | relative_url }}
 When contacting our team, please include the following information:
 
 - Your operating system (e.g., Windows, Linux)
-- Your system’s IP address
+- Your system's IP address
 - If applicable, your HTTP response code (e.g., 403, 400)
-- A description of the issue including what stage of the process you’re on
+- A description of the issue including what stage of the process you're on
 - Any logs that may help us in resolving the issue. Use caution when sharing any log files as they may contain [sensitive information](https://www.justice.gov/opcl/privacy-act-1974).
 
 Please review all encoded content and/or logs before sharing with the team to ensure they do not contain sensitive details.
+
+## Next step
+
+Learn how to use [query parameters]({{ '/query-parameters-v2' | relative_url }}) and [filter claims data]({{ '/filter-claims-data-v2' | relative_url }}) to optimize your exports.
 
 {% include feedback-form.html id="02beb1da" %}

@@ -129,3 +129,6 @@ node_modules
 !**/uswds/img/usa-icons/warning.svg
 
 .unlighthouse
+
+# Local Netlify folder
+.netlify

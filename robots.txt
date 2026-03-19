@@ -1,4 +1,2 @@
 User-agent: *
-Allow: /
-
-Sitemap: https://ab2d.cms.gov/sitemap.xml
+Disallow: /

@@ -1117,4 +1117,8 @@ The claim was pulled twice because the _since date has not changed in both expor
   </table>
 </div>
 
+## Next step
+
+Learn how to [filter claims data]({{ '/filter-claims-data-v2' | relative_url }}) using the _since and _until parameters to reduce duplication and speed up job times.
+
 {% include feedback-form.html id="a9031f20" %}

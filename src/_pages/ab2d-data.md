@@ -79,4 +79,8 @@ There are specific [permitted uses]({{ '/about' | relative_url }}) for the data.
   </div>
 </div>
 
+## Next step
+
+Learn about [query parameters]({{ '/query-parameters-v2' | relative_url }}) to filter the claims data returned by your export jobs.
+
 {% include feedback-form.html id="0df4c778" %}

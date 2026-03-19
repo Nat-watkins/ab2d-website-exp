@@ -136,4 +136,8 @@ jq --version
     </li>
 </ol>
 
+## Next step
+
+Now that curl and jq are installed, learn [how to get a bearer token]({{ '/get-a-bearer-token' | relative_url }}) to start using the API.
+
 {% include feedback-form.html id="c7268c09" %}

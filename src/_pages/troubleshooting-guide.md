@@ -248,4 +248,13 @@ If the system is correct, check with your IT team to make sure you have a static
 
 {% include accordion.html id="a18" heading="How are parameters different between v1 and v2?" expanded=false bordered=false accordionContent=a18AccordionContent %}
 
+## Still need help?
+
+If the troubleshooting guide didn't resolve your issue, visit [Support]({{ '/support' | relative_url }}) or email the AB2D team at [ab2d@cms.hhs.gov](mailto:ab2d@cms.hhs.gov). When contacting our team, please include:
+
+- Your operating system
+- If applicable, your HTTP response code (e.g., 403, 400)
+- A description of the issue including which stage of the process you're on
+- Any relevant logs
+
 {% include feedback-form.html id="47414305" %}

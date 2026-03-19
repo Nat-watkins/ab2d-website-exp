@@ -9,177 +9,144 @@ in-page-nav: true
 
 # {{ page.page_title }}
 
-The AB2D API uses [Fast Healthcare Interoperability Resources (FHIR)](https://hl7.org/fhir/R4/overview.html) to share enrollees’ Medicare Parts A and B claims data. Only active, stand-alone Prescription Drug Plan (PDP) sponsors are eligible to use AB2D. You can use a variety of tools or client software programs, like [curl]({{ '/setup-instructions' | relative_url }}), to access the sandbox and production environments.
+The AB2D API provides Medicare Parts A and B claims data to active, stand-alone Prescription Drug Plan (PDP) sponsors. It uses the [FHIR Bulk Data Export](https://hl7.org/fhir/uv/bulkdata/) standard to deliver [ExplanationOfBenefit](https://hl7.org/fhir/R4/explanationofbenefit.html) resources in NDJSON format.
+
+{% capture versionAlert %}
+AB2D offers two API versions. Version 2 (FHIR R4) is recommended for all new integrations. Version 1 (FHIR STU3) is still supported but does not include the <code>_until</code> parameter.
+{% endcapture %}
+{% include alert.html variant="info" text=versionAlert classNames="measure-6" %}
 
 ## Getting started
 
+Follow these steps to start using the AB2D API.
+
 <ol class="usa-process-list margin-top-1">
   <li class="usa-process-list__item">
-    <p class="usa-process-list__heading">Learn about AB2D</p>
+    <p class="usa-process-list__heading">Review the available data</p>
     <p>
-      Explore the <a href="{{ '/api-documentation#what-s-the-difference-between-the-sandbox-and-production-environments' | relative_url }}">documentation</a>, <a href="{{ '/ab2d-data#data-dictionary' | relative_url }}">Data Dictionary</a>, and <a href="{{ '/ab2d-data#sample-files' | relative_url }}">sample files</a>.
+      Explore the <a href="{{ '/ab2d-data#data-dictionary' | relative_url }}">Data Dictionary</a> and <a href="{{ '/ab2d-data#sample-files' | relative_url }}">sample files</a> to understand what claims data AB2D provides and how it is structured.
     </p>
   </li>
   <li class="usa-process-list__item">
-    <p class="usa-process-list__heading">Use the sandbox</p>
+    <p class="usa-process-list__heading">Set up your environment</p>
     <p>
-      The sandbox environment allows anyone to try the API and download test claims data. Learn how to <a href="{{ '/get-a-bearer-token' | relative_url }}">get a bearer token</a> and <a href="{{ '/access-sandbox-data' | relative_url }}">access the sandbox</a>.
+      Install <a href="{{ '/setup-instructions' | relative_url }}">curl and jq</a> or another HTTP client. You can also use the <a href="https://sandbox.ab2d.cms.gov/swagger-ui/index.html?urls.primaryName=V2%20-%20FHIR%20R4" target="_blank" rel="noopener">AB2D Swagger UI</a> to interact with the API in your browser.
+    </p>
+  </li>
+  <li class="usa-process-list__item">
+    <p class="usa-process-list__heading">Get a bearer token</p>
+    <p>
+      <a href="{{ '/get-a-bearer-token' | relative_url }}">Authenticate with your credentials</a> to receive a bearer token. You need a valid token for every API request.
+    </p>
+  </li>
+  <li class="usa-process-list__item">
+    <p class="usa-process-list__heading">Access sandbox data</p>
+    <p>
+      The sandbox is open to everyone. <a href="{{ '/access-sandbox-data' | relative_url }}">Try the API with synthetic data</a> to learn the workflow before requesting production access.
     </p>
   </li>
   <li class="usa-process-list__item">
     <p class="usa-process-list__heading">Get production access</p>
     <p>
-      PDP sponsors must have <a href="{{ '/production-access' | relative_url }}">production access</a> to access their enrollees’ claims data.
+      PDP sponsors must complete <a href="{{ '/production-access' | relative_url }}">attestation and onboarding</a> to access their enrollees' real claims data.
     </p>
   </li>
 </ol>
 
-### What’s the difference between the sandbox and production environments?
+## Sandbox vs. production
+
+Both environments use the same endpoints and workflow. The key differences are credentials and data.
 
 <table class="usa-table usa-table--borderless">
-  <caption class="usa-sr-only">Sandbox and Production environments comparison</caption>
+  <caption class="usa-sr-only">Comparison of sandbox and production environments</caption>
   <thead>
     <tr>
+      <th scope="col"></th>
       <th scope="col">Sandbox</th>
       <th scope="col">Production</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Available to everyone</td>
-      <td>Must have completed the steps for <a href="{{ '/production-access' | relative_url }}">production access</a></td>
+      <th scope="row">Access</th>
+      <td>Open to everyone</td>
+      <td>PDP sponsors with <a href="{{ '/production-access' | relative_url }}">production access</a></td>
     </tr>
     <tr>
-      <td>Contains synthetic claims data</td>
-      <td>Contains real Medicare enrollee data</td>
+      <th scope="row">URL</th>
+      <td>sandbox.ab2d.cms.gov</td>
+      <td>api.ab2d.cms.gov</td>
+    </tr>
+    <tr>
+      <th scope="row">Identity provider</th>
+      <td>test.idp.idm.cms.gov</td>
+      <td>idm.cms.gov</td>
+    </tr>
+    <tr>
+      <th scope="row">Data</th>
+      <td>Synthetic claims data</td>
+      <td>Real Medicare enrollee claims data</td>
+    </tr>
+    <tr>
+      <th scope="row">IP restrictions</th>
+      <td>None</td>
+      <td>Static IP allowlist required</td>
     </tr>
   </tbody>
 </table>
 
-### The sandbox environment
+## API workflow
 
-The sandbox (sandbox.ab2d.cms.gov) is a public environment available to anyone who wants to learn how the API works. AB2D provides you with test credentials for access to sandbox data. You’ll use the sandbox identity provider (test.idp.idm.cms.gov) for this.
+The AB2D API uses an asynchronous bulk data export pattern. Each export follows 4 steps:
 
-### The production environment
+<table class="usa-table usa-table--stacked usa-table--borderless">
+  <caption class="usa-sr-only">API workflow steps</caption>
+  <thead>
+    <tr>
+      <th scope="col">Step</th>
+      <th scope="col">What you do</th>
+      <th scope="col">Endpoint</th>
+      <th scope="col">Duration</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th data-label="Step" scope="row">1. Get a bearer token</th>
+      <td data-label="What you do">Authenticate with your credentials to get a token</td>
+      <td data-label="Endpoint"><a href="{{ '/get-a-bearer-token' | relative_url }}">Authentication guide</a></td>
+      <td data-label="Duration">Seconds (expires after 30 minutes)</td>
+    </tr>
+    <tr>
+      <th data-label="Step" scope="row">2. Start an export job</th>
+      <td data-label="What you do">Request an export and save the job ID from the response</td>
+      <td data-label="Endpoint"><code>GET /api/v2/fhir/Patient/$export</code></td>
+      <td data-label="Duration">Seconds</td>
+    </tr>
+    <tr>
+      <th data-label="Step" scope="row">3. Check job status</th>
+      <td data-label="What you do">Poll until the job completes (200 response)</td>
+      <td data-label="Endpoint"><code>GET /api/v2/fhir/Job/{jobId}/$status</code></td>
+      <td data-label="Duration">Minutes to hours</td>
+    </tr>
+    <tr>
+      <th data-label="Step" scope="row">4. Download files</th>
+      <td data-label="What you do">Download NDJSON files from the URLs in the completed response</td>
+      <td data-label="Endpoint"><code>GET /api/v2/fhir/Job/{jobId}/file/{fileName}</code></td>
+      <td data-label="Duration">Minutes to hours</td>
+    </tr>
+  </tbody>
+</table>
 
-Production (api.ab2d.cms.gov) is a private environment available only to PDP sponsors who have completed the steps to gain production access. You’ll need to provide the static IP address(es) for each system using the API. AB2D then provides you with production credentials for access to your enrollees’ data. You’ll use the production identity provider (idm.cms.gov) for this.
+You can also cancel an in-progress job with `DELETE /api/v2/fhir/Job/{jobId}/$status` or check the server's capabilities with `GET /api/v2/fhir/metadata`.
 
-Both environments use the same endpoints with the main differences being the credentials used for your bearer token and the environment URL.
-
-
-## Expected workflow
-Jobs are units of work that export and compile Medicare claims data. They are broken into 4 steps. These phases are standard regardless of your programming language or platform. The AB2D workflow is based on the [Bulk Data Implementation Guide](https://hl7.org/fhir/uv/bulkdata/).
-
-  <table class="usa-table usa-table--stacked usa-table--borderless">
-    <caption class="usa-sr-only">Expected workflow table</caption>
-    <thead>
-      <tr>
-        <th scope="col">Step</th>
-        <th scope="col">Goal</th>
-        <th scope="col">Endpoint</th>
-        <th scope="col">Time</th>
-        <th scope="col">Frequency</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <th data-label="Step" scope="row">
-          Get a bearer token
-        </th>
-        <td data-label="Goal">
-          Get a token for authentication with the AB2D API.
-        </td>
-        <td data-label="Endpoint">
-          <a href="{{ '/get-a-bearer-token' | relative_url }}">Learn how to get a bearer token.</a>
-        </td>
-        <td data-label="Time">
-          Seconds
-        </td>
-        <td data-label="Frequency">
-          At least every 30 minutes during the job.
-        </td>
-      </tr>
-      <tr>
-        <th data-label="Step" scope="row">
-          Start a job
-        </th>
-        <td data-label="Goal">
-          Start a job and save the unique job ID.
-        </td>
-        <td data-label="Endpoint">
-          Export endpoint
-        </td>
-        <td data-label="Time">
-          Seconds
-        </td>
-        <td data-label="Frequency">
-          Once a job
-        </td>
-      </tr>
-      <tr>
-        <th data-label="Step" scope="row">
-          Check job status
-        </th>
-        <td data-label="Goal">
-          Check on the job status as you wait for it to finish.
-        </td>
-        <td data-label="Endpoint">
-          Status endpoint
-        </td>
-        <td data-label="Time">
-          Minutes to hours depending on contract size
-        </td>
-        <td data-label="Frequency">
-          Once every few minutes
-        </td>
-      </tr>
-      <tr>
-        <th data-label="Step" scope="row">
-          Download the files
-        </th>
-        <td data-label="Goal">
-          Download the files returned from a completed job.
-        </td>
-        <td data-label="Endpoint">
-          Download endpoint
-        </td>
-        <td data-label="Time">
-          Minutes to hours depending on download speeds
-        </td>
-        <td data-label="Frequency">
-          Once a job
-        </td>
-      </tr>
-      <tr>
-        <th data-label="Step" scope="row">
-          Optional - Check the health of the AB2D API
-        </th>
-        <td data-label="Goal">
-          Check the current status of the API, like whether it’s up, down, or busy.
-        </td>
-        <td data-label="Endpoint">
-          Health endpoint
-        </td>
-        <td data-label="Time">
-          Seconds
-        </td>
-        <td data-label="Frequency">
-          Once a job
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-## Endpoints, schemas, and parameters
-
-Get an overview of the endpoints you can request at the [sandbox]({{ '/access-sandbox-data' | relative_url }}) or [production]({{ '/access-production-claims-data' | relative_url }}) URL. You can also visit the [AB2D Swagger UI](https://sandbox.ab2d.cms.gov/swagger-ui/index.html?urls.primaryName=V2%20-%20FHIR%20R4), which is based on the OpenAPI specification. While starting a job, you can use [parameters]({{ '/query-parameters-v2' | relative_url }}) to filter or specify the claims data returned.
+Use [query parameters]({{ '/query-parameters-v2' | relative_url }}) like `_since` and `_until` to filter the claims data returned by an export job.
 
 ## JSON resources
 
-Both versions of AB2D use the JSON (NDJSON) data format for the FHIR ExplanationOfBenefit resource type.
+AB2D delivers data in NDJSON (Newline Delimited JSON) format using the FHIR ExplanationOfBenefit resource type.
 
-- [Intro to JSON Format](http://json.org/)
-- [Newline Delimited JSON (NDJSON)](https://github.com/ndjson/ndjson-spec)
+- [Intro to JSON format](http://json.org/)
+- [NDJSON specification](https://github.com/ndjson/ndjson-spec)
 - [JSON format viewer/validator](https://jsonlint.com/)
 
 ## Glossary
@@ -187,25 +154,25 @@ Both versions of AB2D use the JSON (NDJSON) data format for the FHIR Explanation
 <div class="padding-top-4"></div>
 
 {% capture a1AccordionContent %}
-  APIs allow software systems and applications to communicate with each other. APIs follow unique definitions and protocols. The AB2D API is publicly available.
+  APIs allow software systems and applications to communicate with each other. APIs follow unique definitions and protocols. The AB2D API is publicly available and follows the <a href="https://hl7.org/fhir/uv/bulkdata/">FHIR Bulk Data Export</a> standard.
 {% endcapture %}
 
 {% capture a2AccordionContent %}
-  A basic encoding that changes your token from a text format to a standard ASCII format that is easier for computers to interpret.
+  A basic encoding that converts your credentials from plain text to a standard ASCII format for safe transmission. You encode your client ID and password in Base64 format when requesting a bearer token.
 {% endcapture %}
 
 {% capture a3AccordionContent %}
   <p>
-    An <a href="https://www.okta.com/identity-101/why-your-company-needs-an-identity-provider/" target="_blank" rel="noopener">IdP</a> is a service that stores, verifies, and manages user identities. AB2D uses a third-party IdP tool called <a href="https://support.okta.com/help/s/article/What-is-Okta?language=en_US" target="_blank" rel="noopener">Okta</a>. PDP sponsors use their set of Okta credentials to get a bearer token and access the API.
+    An <a href="https://www.okta.com/identity-101/why-your-company-needs-an-identity-provider/" target="_blank" rel="noopener">IdP</a> is a service that stores, verifies, and manages user identities. AB2D uses <a href="https://support.okta.com/help/s/article/What-is-Okta?language=en_US" target="_blank" rel="noopener">Okta</a> as its IdP. You authenticate with your Okta credentials to get a bearer token and access the API.
   </p>
 {% endcapture %}
 
 {% capture a4AccordionContent %}
 <p>
-  Bearer tokens, also referred to as access tokens or <a href="https://jwt.io/introduction/" target="_blank" rel="noopener">JSON web tokens</a>, are used during the <a href="https://oauth.net/2/" target="_blank" rel="noopener">OAuth 2.0</a> authentication and authorization process. You need a bearer token every time you access the sandbox or production environment.
+  A bearer token (also called an access token or <a href="https://jwt.io/introduction/" target="_blank" rel="noopener">JSON web token</a>) authorizes your API requests through <a href="https://oauth.net/2/" target="_blank" rel="noopener">OAuth 2.0</a>. You need a valid bearer token for every request to the sandbox or production environment.
 </p>
 <p>
-  You can get a bearer token by providing Okta with sandbox credentials or the production credentials received during <a href="{{ '/production-access' | relative_url }}">production access</a>. Bearer tokens expire after 30 minutes, after which you must complete the process again.
+  Get a bearer token by authenticating with your sandbox or <a href="{{ '/production-access' | relative_url }}">production</a> credentials. Tokens expire after 30 minutes.
 </p>
 {% endcapture %}
 
@@ -216,5 +183,9 @@ Both versions of AB2D use the JSON (NDJSON) data format for the FHIR Explanation
 {% include accordion.html id="a3" heading="Identity Provider (IdP) and Okta" expanded=false bordered=false accordionContent=a3AccordionContent %}
 
 {% include accordion.html id="a4" heading="Bearer token" expanded=false bordered=false accordionContent=a4AccordionContent %}
+
+## Next step
+
+Ready to try the API? Start by [getting a bearer token]({{ '/get-a-bearer-token' | relative_url }}).
 
 {% include feedback-form.html id="f42c76e3" %}
