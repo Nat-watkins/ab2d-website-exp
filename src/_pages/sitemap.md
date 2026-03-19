@@ -23,41 +23,30 @@ show-side-nav: false
             </ul>
         </li>
         <li>
-            <a href="{{ '/api-documentation' | relative_url }}">API Documentation</a>
+            <a href="{{ '/get-started' | relative_url }}">API Documentation</a>
             <ul>
                 <li>
-                    <a href="{{ '/get-a-bearer-token' | relative_url }}">Get a Bearer Token</a>
+                    <a href="{{ '/authentication' | relative_url }}">Authentication</a>
+                </li>
+                <li>
+                    <a href="{{ '/sandbox-guide' | relative_url }}">Sandbox Guide</a>
+                </li>
+                <li>
+                    <a href="{{ '/production-guide' | relative_url }}">Production Guide</a>
+                </li>
+                <li>
+                    <a href="{{ '/api-reference' | relative_url }}">API Reference</a>
+                </li>
+                <li>
+                    <a href="{{ '/data-dictionary' | relative_url }}">Data Dictionary</a>
                     <ul>
                         <li>
-                            <a href="{{ '/setup-instructions' | relative_url }}">Setup Instructions</a>
+                            <a href="{{ '/filtering-claims-data' | relative_url }}">Filtering Claims Data</a>
                         </li>
                     </ul>
                 </li>
                 <li>
-                    <a href="{{ '/access-sandbox-data' | relative_url }}">How to Access Sandbox Data</a>
-                </li>
-                <li>
-                    <a href="{{ '/access-production-claims-data' | relative_url }}">How to Access Production Claims Data</a>
-                </li>
-                <li>
-                    <a href="{{ '/query-parameters-v2' | relative_url }}">HTTP Query Parameters - v2</a>
-                </li>
-                <li>
                     <a href="{{ '/troubleshooting-guide' | relative_url }}">Troubleshooting Guide</a>
-                </li>
-            </ul>
-        </li>
-        <li>
-            <a href="{{ '/ab2d-data' | relative_url }}">AB2D Data</a>
-            <ul>
-                <li>
-                    <a href="{{ '/claims-data-details' | relative_url }}">Claims Data Details</a>
-                </li>
-                <li>
-                    <a href="{{ '/filter-claims-data-v1' | relative_url }}">How to Filter Claims Data - v1</a>
-                </li>
-                <li>
-                    <a href="{{ '/filter-claims-data-v2' | relative_url }}">How to Filter Claims Data - v2</a>
                 </li>
             </ul>
         </li>

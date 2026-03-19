@@ -1,9 +1,10 @@
 ---
 layout: api-docs
-page_title: "How to Access Production Claims Data"
-seo_title: "Access Production Claims Data | AB2D Medicare API"
+page_title: "Production Guide"
+seo_title: "Production Guide | AB2D Medicare API"
 description: "Prescription Drug Plan sponsors can learn how to access Medicare patients' Parts A & B claims data in the AB2D production environment."
-permalink: /access-production-claims-data
+permalink: /production-guide
+redirect_from: [/access-production-claims-data]
 in-page-nav: true
 ---
 
@@ -17,7 +18,7 @@ Before you begin, make sure you have:
   <li>Completed <a href="{{ '/production-access' | relative_url }}">attestation and onboarding</a></li>
   <li>Received production credentials from the AB2D team</li>
   <li>Provided your static IP address(es) to the AB2D team</li>
-  <li>Successfully <a href="{{ '/access-sandbox-data' | relative_url }}">retrieved sandbox data</a></li>
+  <li>Successfully <a href="{{ '/sandbox-guide' | relative_url }}">retrieved sandbox data</a></li>
 </ul>
 {% endcapture %}
 {% include alert.html variant="warning" text=prereqAlert classNames="measure-6" %}
@@ -39,9 +40,9 @@ Before you begin, make sure you have:
 
 ## Production workflow
 
-The production and sandbox environments use the same endpoints and workflow. You can [follow the same steps as you did in the sandbox]({{ '/access-sandbox-data' | relative_url }}) for production data.
+The production and sandbox environments use the same endpoints and workflow. You can [follow the same steps as you did in the sandbox]({{ '/sandbox-guide' | relative_url }}) for production data.
 
-You'll still need [a bearer token]({{ '/get-a-bearer-token' | relative_url }}) to call the API, but use the production identity provider (idm.cms.gov), production URL (api.ab2d.cms.gov), and credentials issued by the AB2D team instead.
+You'll still need [a bearer token]({{ '/authentication' | relative_url }}) to call the API, but use the production identity provider (idm.cms.gov), production URL (api.ab2d.cms.gov), and credentials issued by the AB2D team instead.
 
 ### Endpoints
 
@@ -93,7 +94,7 @@ You'll still need [a bearer token]({{ '/get-a-bearer-token' | relative_url }}) t
 
 ### Job expiration
 
-Job IDs and file URLs expire after 72 hours or 6 downloads. If it takes more than 30 hours for a job to complete, the request will time out and fail. Reduce file sizes and download times by using [parameters]({{ '/query-parameters-v2' | relative_url }}) to filter the claims data returned or download compressed data files in gzip format.
+Job IDs and file URLs expire after 72 hours or 6 downloads. If it takes more than 30 hours for a job to complete, the request will time out and fail. Reduce file sizes and download times by using [parameters]({{ '/api-reference' | relative_url }}) to filter the claims data returned or download compressed data files in gzip format.
 
 ### Format
 
@@ -103,7 +104,7 @@ You can optionally download files in gzip format and decompress (unzip) them aft
 
 ## Incremental export model
 
-Incremental exports of data, ideally at a bi-weekly frequency, reduce data duplication and speed up job times. This allows you to request newly updated data that you haven't downloaded since your last export. [Learn more about the incremental export model.]({{ '/filter-claims-data-v2' | relative_url }}#incremental-export-model)
+Incremental exports of data, ideally at a bi-weekly frequency, reduce data duplication and speed up job times. This allows you to request newly updated data that you haven't downloaded since your last export. [Learn more about the incremental export model.]({{ '/filtering-claims-data' | relative_url }}#incremental-export-model)
 
 ## Sample client scripts
 
@@ -320,7 +321,7 @@ python --version
 {% include copy_snippet.html code=curlSnippet language="shell" can_copy=true %}
     </li>
     <li>
-        <p>Start the export job. You can optionally use <a href="{{ '/query-parameters-v2' | relative_url }}">parameters</a> to filter the data returned.</p>
+        <p>Start the export job. You can optionally use <a href="{{ '/api-reference' | relative_url }}">parameters</a> to filter the data returned.</p>
         <ul>
             <li>
                 <p>Linux/Mac</p>
@@ -465,6 +466,6 @@ Please review all encoded content and/or logs before sharing with the team to en
 
 ## Next step
 
-Learn how to use [query parameters]({{ '/query-parameters-v2' | relative_url }}) and [filter claims data]({{ '/filter-claims-data-v2' | relative_url }}) to optimize your exports.
+Learn how to use [query parameters]({{ '/api-reference' | relative_url }}) and [filter claims data]({{ '/filtering-claims-data' | relative_url }}) to optimize your exports.
 
 {% include feedback-form.html id="02beb1da" %}

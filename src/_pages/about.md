@@ -217,6 +217,6 @@ show-side-nav: false
 
 ## Next step
 
-Ready to try the API? Visit [API Documentation]({{ '/api-documentation' | relative_url }}) to get started.
+Ready to try the API? Visit [API Documentation]({{ '/get-started' | relative_url }}) to get started.
 
 {% include feedback-form.html id="3fc3aaf7" %}

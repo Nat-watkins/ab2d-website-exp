@@ -1,9 +1,11 @@
 ---
 layout: api-docs
-page_title: "API Documentation"
-seo_title: "API Documentation | AB2D Medicare Enrollee Claims Data"
+page_title: "Get Started"
+seo_title: "Get Started | AB2D Medicare Enrollee Claims Data"
 description: "Access comprehensive API documentation for AB2D, including instructions on how to access sandbox and production claims data."
-permalink: /api-documentation
+permalink: /get-started
+redirect_from:
+  - /api-documentation
 in-page-nav: true
 ---
 
@@ -24,25 +26,25 @@ Follow these steps to start using the AB2D API.
   <li class="usa-process-list__item">
     <p class="usa-process-list__heading">Review the available data</p>
     <p>
-      Explore the <a href="{{ '/ab2d-data#data-dictionary' | relative_url }}">Data Dictionary</a> and <a href="{{ '/ab2d-data#sample-files' | relative_url }}">sample files</a> to understand what claims data AB2D provides and how it is structured.
+      Explore the <a href="{{ '/data-dictionary#data-dictionary' | relative_url }}">Data Dictionary</a> and <a href="{{ '/data-dictionary#sample-files' | relative_url }}">sample files</a> to understand what claims data AB2D provides and how it is structured.
     </p>
   </li>
   <li class="usa-process-list__item">
     <p class="usa-process-list__heading">Set up your environment</p>
     <p>
-      Install <a href="{{ '/setup-instructions' | relative_url }}">curl and jq</a> or another HTTP client. You can also use the <a href="https://sandbox.ab2d.cms.gov/swagger-ui/index.html?urls.primaryName=V2%20-%20FHIR%20R4" target="_blank" rel="noopener">AB2D Swagger UI</a> to interact with the API in your browser.
+      Install <a href="{{ '/authentication' | relative_url }}">curl and jq</a> or another HTTP client. You can also use the <a href="https://sandbox.ab2d.cms.gov/swagger-ui/index.html?urls.primaryName=V2%20-%20FHIR%20R4" target="_blank" rel="noopener">AB2D Swagger UI</a> to interact with the API in your browser.
     </p>
   </li>
   <li class="usa-process-list__item">
     <p class="usa-process-list__heading">Get a bearer token</p>
     <p>
-      <a href="{{ '/get-a-bearer-token' | relative_url }}">Authenticate with your credentials</a> to receive a bearer token. You need a valid token for every API request.
+      <a href="{{ '/authentication' | relative_url }}">Authenticate with your credentials</a> to receive a bearer token. You need a valid token for every API request.
     </p>
   </li>
   <li class="usa-process-list__item">
     <p class="usa-process-list__heading">Access sandbox data</p>
     <p>
-      The sandbox is open to everyone. <a href="{{ '/access-sandbox-data' | relative_url }}">Try the API with synthetic data</a> to learn the workflow before requesting production access.
+      The sandbox is open to everyone. <a href="{{ '/sandbox-guide' | relative_url }}">Try the API with synthetic data</a> to learn the workflow before requesting production access.
     </p>
   </li>
   <li class="usa-process-list__item">
@@ -113,7 +115,7 @@ The AB2D API uses an asynchronous bulk data export pattern. Each export follows 
     <tr>
       <th data-label="Step" scope="row">1. Get a bearer token</th>
       <td data-label="What you do">Authenticate with your credentials to get a token</td>
-      <td data-label="Endpoint"><a href="{{ '/get-a-bearer-token' | relative_url }}">Authentication guide</a></td>
+      <td data-label="Endpoint"><a href="{{ '/authentication' | relative_url }}">Authentication guide</a></td>
       <td data-label="Duration">Seconds (expires after 30 minutes)</td>
     </tr>
     <tr>
@@ -139,7 +141,7 @@ The AB2D API uses an asynchronous bulk data export pattern. Each export follows 
 
 You can also cancel an in-progress job with `DELETE /api/v2/fhir/Job/{jobId}/$status` or check the server's capabilities with `GET /api/v2/fhir/metadata`.
 
-Use [query parameters]({{ '/query-parameters-v2' | relative_url }}) like `_since` and `_until` to filter the claims data returned by an export job.
+Use [query parameters]({{ '/api-reference' | relative_url }}) like `_since` and `_until` to filter the claims data returned by an export job.
 
 ## JSON resources
 
@@ -186,6 +188,6 @@ AB2D delivers data in NDJSON (Newline Delimited JSON) format using the FHIR Expl
 
 ## Next step
 
-Ready to try the API? Start by [getting a bearer token]({{ '/get-a-bearer-token' | relative_url }}).
+Ready to try the API? Start by [setting up authentication]({{ '/authentication' | relative_url }}).
 
 {% include feedback-form.html id="f42c76e3" %}

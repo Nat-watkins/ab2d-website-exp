@@ -1,15 +1,67 @@
 ---
 layout: api-docs
-page_title: "HTTP Query Parameters - v2"
-seo_title: "Query Parameters for Filtering Claims Data v2 | AB2D API"
-description: "Learn more about HTTP query parameters, and how they can filter Medicare claims data with the AB2D API."
-permalink: /query-parameters-v2
+page_title: "API Reference"
+seo_title: "API Reference & Query Parameters | AB2D Medicare API"
+description: "Complete API endpoint reference and query parameter documentation for the AB2D Medicare Claims Data API."
+permalink: /api-reference
+redirect_from: /query-parameters-v2
 in-page-nav: true
 ---
 
 # {{ page.page_title }}
 
-HTTP query parameters filter or specify the claims data returned during requests. The AB2D API offers a variety of parameters, which can differ depending on what version you're using. Once you have a good understanding of parameters you can [use them to filter claims data]({{ '/filter-claims-data-v2' | relative_url }}).
+This page provides a complete reference for the AB2D API, including all available endpoints and query parameters. The AB2D API uses the [FHIR Bulk Data Export](https://hl7.org/fhir/uv/bulkdata/) standard to deliver [ExplanationOfBenefit](https://hl7.org/fhir/R4/explanationofbenefit.html) resources in NDJSON format.
+
+## Endpoints
+
+All endpoints are available in both the sandbox (`sandbox.ab2d.cms.gov`) and production (`api.ab2d.cms.gov`) environments.
+
+<table class="usa-table usa-table--striped">
+  <caption class="usa-sr-only">AB2D API endpoints</caption>
+  <thead>
+    <tr>
+      <th scope="col">Method</th>
+      <th scope="col">Path</th>
+      <th scope="col">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>GET</code></td>
+      <td><code>/api/v2/fhir/Patient/$export</code></td>
+      <td>Start a new export job for claims data</td>
+    </tr>
+    <tr>
+      <td><code>GET</code></td>
+      <td><code>/api/v2/fhir/Job/{jobId}/$status</code></td>
+      <td>Check the status of an export job</td>
+    </tr>
+    <tr>
+      <td><code>GET</code></td>
+      <td><code>/api/v2/fhir/Job/{jobId}/file/{fileName}</code></td>
+      <td>Download a completed export file</td>
+    </tr>
+    <tr>
+      <td><code>DELETE</code></td>
+      <td><code>/api/v2/fhir/Job/{jobId}/$status</code></td>
+      <td>Cancel an in-progress export job</td>
+    </tr>
+    <tr>
+      <td><code>GET</code></td>
+      <td><code>/api/v2/fhir/metadata</code></td>
+      <td>Retrieve the server's capability statement</td>
+    </tr>
+    <tr>
+      <td><code>GET</code></td>
+      <td><code>/api/v2/fhir/HealthCheck</code></td>
+      <td>Check the health status of the API</td>
+    </tr>
+  </tbody>
+</table>
+
+## Query parameters
+
+HTTP query parameters filter or specify the claims data returned during requests. The AB2D API offers a variety of parameters, which can differ depending on what version you're using. Once you have a good understanding of parameters you can [use them to filter claims data]({{ '/filtering-claims-data' | relative_url }}).
 
 {% capture versionAlertHeading %}
   <p class="usa-alert__heading text-bold">
@@ -21,12 +73,12 @@ HTTP query parameters filter or specify the claims data returned during requests
         This documentation is for AB2D version 2, which implements the <a href="https://hl7.org/fhir/uv/bulkdata/" target="_blank" rel="noopener">Bulk Data Access Implementation Guide v2.0.0</a>. The _until parameter is only available with v2.
     </p>
     <p>
-        For organizations using v1, visit our <a href="{{ '/filter-claims-data-v1' | relative_url }}">v1 documentation</a> to learn about parameters. <a href="https://github.com/CMSgov/ab2d-pdp-documentation/raw/main/AB2D%20STU3-R4%20Migration%20Guide%20Final.xlsx" target="_blank" rel="noopener">Learn more about migrating from v1 to v2</a>.
+        For organizations using v1, visit our <a href="{{ '/filtering-claims-data' | relative_url }}">v1 documentation</a> to learn about parameters. <a href="https://github.com/CMSgov/ab2d-pdp-documentation/raw/main/AB2D%20STU3-R4%20Migration%20Guide%20Final.xlsx" target="_blank" rel="noopener">Learn more about migrating from v1 to v2</a>.
     </p>
 {% endcapture %}
 {% include alert.html variant="info" text=versionAlert heading=versionAlertHeading classNames="measure-6" %}
 
-## Parameter reference
+### Parameter reference
 
 <table class="usa-table usa-table--striped">
   <caption class="usa-sr-only">AB2D v2 query parameters</caption>
@@ -68,7 +120,7 @@ HTTP query parameters filter or specify the claims data returned during requests
 
 All datetime values must follow the [ISO datetime format](https://en.wikipedia.org/wiki/ISO_8601) (yyyy-mm-dd'T'hh:mm:ss[+\|-]hh:mm). The time zone must be specified using + or - followed by hh:mm.
 
-## The _since parameter
+### The _since parameter
 
 The _since parameter filters for claims data last updated since a specified date. You can use the meta/lastUpdated property of each ExplanationOfBenefit (EOB) resource to see when each record was last updated.
 
@@ -78,7 +130,7 @@ The _since parameter filters for claims data last updated since a specified date
 
 **Earliest possible date:** January 1, 2020 (2020-01-01T00:00:00-05:00) or your organization's attestation date, whichever is later.
 
-## The _until parameter
+### The _until parameter
 
 The _until parameter filters for claims data last updated until a specified date. This parameter is only available with v2.
 
@@ -86,11 +138,11 @@ The _until parameter filters for claims data last updated until a specified date
 
 **Latest possible date:** The current date.
 
-## Using _since and _until together
+### Using _since and _until together
 
 Together, the _since and _until parameters allow you to pull data that was last updated within a certain date range. However, the _since parameter value must be an earlier date than the _until parameter value. In other words, the _since datetime must have occurred before the _until datetime.
 
-### Default behavior examples
+#### Default behavior examples
 
 <table class="usa-table usa-table--stacked usa-table--borderless width-full">
     <caption class="usa-sr-only">Default parameter behavior examples</caption>
@@ -152,7 +204,7 @@ Together, the _since and _until parameters allow you to pull data that was last 
     </tbody>
 </table>
 
-### Valid parameter example
+#### Valid parameter example
 
 <table class="usa-table usa-table--stacked usa-table--borderless width-full">
     <caption class="usa-sr-only">Valid parameter example</caption>
@@ -172,7 +224,7 @@ Together, the _since and _until parameters allow you to pull data that was last 
 
 The _until datetime is after the _since datetime. The datetimes are valid and follow the ISO format with time zones.
 
-### Invalid parameter examples
+#### Invalid parameter examples
 
 <table class="usa-table usa-table--stacked usa-table--borderless width-full">
     <caption class="usa-sr-only">Invalid parameter example: missing time zone</caption>
@@ -207,7 +259,7 @@ The _until datetime is after the _since datetime. The datetimes are valid and fo
     </tbody>
 </table>
 
-### Common use case: targeting a specific date range
+#### Common use case: targeting a specific date range
 
 There may be use cases where a specific date range of claims data is required. For example:
 1. Your organization decides to incrementally export data and runs a job on December 1, 2023 for a month's worth of data.
@@ -217,14 +269,22 @@ There may be use cases where a specific date range of claims data is required. F
 5. Your organization runs a 2nd job with November 12, 2023 as the _since parameter value and November 18, 2023 as the _until parameter value.
 6. The job takes less than 1 hour to export the week's worth of missing data from your database.
 
-[Review more example scenarios for the _since parameter.]({{ '/claims-data-details' | relative_url }}#example-scenario-3)
+[Review more example scenarios for the _since parameter.]({{ '/data-dictionary' | relative_url }}#example-scenario-3)
 
-## The _outputFormat parameter
+### The _outputFormat parameter
 
 The _outputFormat parameter allows you to request different formats for your data exports. The default and only format AB2D currently supports is application/fhir+NDJSON. The server must support [Newline Delimited JSON (NDJSON)](https://github.com/ndjson/ndjson-spec), but may choose to support additional output formats. The server must also accept the full content type of application/fhir+NDJSON, as well as the abbreviated representations application/NDJSON and NDJSON.
 
+## JSON resources
+
+AB2D delivers data in NDJSON (Newline Delimited JSON) format using the FHIR ExplanationOfBenefit resource type.
+
+- [Intro to JSON format](http://json.org/)
+- [NDJSON specification](https://github.com/ndjson/ndjson-spec)
+- [JSON format viewer/validator](https://jsonlint.com/)
+
 ## Next step
 
-Learn how to [use parameters to filter claims data]({{ '/filter-claims-data-v2' | relative_url }}) for incremental exports.
+Explore the [Data Dictionary]({{ '/data-dictionary' | relative_url }}) to understand the claims data fields returned by the API.
 
 {% include feedback-form.html id="f8e40d29" %}

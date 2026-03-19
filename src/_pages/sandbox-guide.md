@@ -1,15 +1,16 @@
 ---
 layout: api-docs
-page_title: "How to Access Sandbox Data"
-seo_title: "Access Sandbox Test Claims Data | AB2D Medicare API"
+page_title: "Sandbox Guide"
+seo_title: "Sandbox Guide | AB2D Medicare API"
 description: "Connect to the AB2D API and access test Medicare Parts A & B claims data in the sandbox environment."
-permalink: /access-sandbox-data
+permalink: /sandbox-guide
+redirect_from: [/access-sandbox-data]
 in-page-nav: true
 ---
 
 # {{ page.page_title }}
 
-The sandbox environment (sandbox.ab2d.cms.gov) is open to anyone who wants to try the API. You need a [bearer token]({{ '/get-a-bearer-token' | relative_url }}) before you begin.
+The sandbox environment (sandbox.ab2d.cms.gov) is open to anyone who wants to try the API. You need a [bearer token]({{ '/authentication' | relative_url }}) before you begin.
 
 {% capture sandboxAlert %}
 The sandbox contains synthetic data only. No real patient information is used in the sandbox environment.
@@ -92,7 +93,7 @@ JOB_ID=$(echo $RESP2 | grep content-location | sed 's%^.*Job/\([^/]*\).*$%\1%')
 {% endraw %}{% endcapture %}
 {% include copy_snippet.html code=curlSnippet language="shell" can_copy=true %}
 
-You can use [query parameters]({{ '/query-parameters-v2' | relative_url }}) like `_since` and `_until` to filter the claims data returned. If a job takes more than 30 hours, it will time out — use parameters to reduce the data scope.
+You can use [query parameters]({{ '/api-reference' | relative_url }}) like `_since` and `_until` to filter the claims data returned. If a job takes more than 30 hours, it will time out — use parameters to reduce the data scope.
 
 ## Step 2: Check job status
 
@@ -183,7 +184,7 @@ You can also interact with the API through the [AB2D Swagger UI](https://sandbox
 
 1. Expand the **Export** command `/api/v2/fhir/Patient/$export`.
 2. Select **Try it out**.
-3. Optionally add dates in [ISO datetime format](https://en.wikipedia.org/wiki/ISO_8601) for the `_since` and `_until` [parameters]({{ '/query-parameters-v2' | relative_url }}).
+3. Optionally add dates in [ISO datetime format](https://en.wikipedia.org/wiki/ISO_8601) for the `_since` and `_until` [parameters]({{ '/api-reference' | relative_url }}).
 4. Select **Execute**. Copy the job ID from the `content-location` in the response header.
 
 ### Check status and download

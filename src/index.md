@@ -16,7 +16,7 @@ description: "Access enrollees' Medicare Parts A & B claims data through the AB2
     </p>
     <div class="grid-row grid-gap margin-top-2">
       <div class="tablet:grid-col-auto margin-top-2">
-        <a href="{{ '/api-documentation' | relative_url }}" class="hero-button usa-button usa-button--inverse usa-button--outline width-full">
+        <a href="{{ '/get-started' | relative_url }}" class="hero-button usa-button usa-button--inverse usa-button--outline width-full">
           Get started
           {% include sprite.html icon="arrow_forward" size="3" %}
         </a>
@@ -39,13 +39,13 @@ description: "Access enrollees' Medicare Parts A & B claims data through the AB2
         <li class="usa-process-list__item">
           <p class="usa-process-list__heading">Learn about the data</p>
           <p>
-            Review the <a href="{{ '/ab2d-data' | relative_url }}">available data</a>, <a href="{{ '/ab2d-data#data-dictionary' | relative_url }}">Data Dictionary</a>, and <a href="{{ '/ab2d-data#sample-files' | relative_url }}">sample files</a> to understand what AB2D provides.
+            Review the <a href="{{ '/data-dictionary' | relative_url }}">available data</a>, <a href="{{ '/data-dictionary#data-dictionary' | relative_url }}">Data Dictionary</a>, and <a href="{{ '/data-dictionary#sample-files' | relative_url }}">sample files</a> to understand what AB2D provides.
           </p>
         </li>
         <li class="usa-process-list__item">
           <p class="usa-process-list__heading">Try the sandbox</p>
           <p>
-            The sandbox is open to everyone. <a href="{{ '/get-a-bearer-token' | relative_url }}">Get a bearer token</a> and <a href="{{ '/access-sandbox-data' | relative_url }}">download test claims data</a> to see how the API works.
+            The sandbox is open to everyone. <a href="{{ '/authentication' | relative_url }}">Get a bearer token</a> and <a href="{{ '/sandbox-guide' | relative_url }}">download test claims data</a> to see how the API works.
           </p>
         </li>
         <li class="usa-process-list__item">
@@ -107,7 +107,7 @@ description: "Access enrollees' Medicare Parts A & B claims data through the AB2
           <li>Dates, times, and places of service</li>
           <li>Provider National Provider Identifiers (NPIs)</li>
         </ul>
-        <p><a href="{{ '/ab2d-data' | relative_url }}" class="usa-button usa-button--unstyled">Learn about the data {% include sprite.html icon="arrow_forward" %}</a></p>
+        <p><a href="{{ '/data-dictionary' | relative_url }}" class="usa-button usa-button--unstyled">Learn about the data {% include sprite.html icon="arrow_forward" %}</a></p>
       </div>
     </div>
 

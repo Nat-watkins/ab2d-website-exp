@@ -1,17 +1,73 @@
 ---
 layout: api-docs
-page_title: "Claims Data Details"
-seo_title: "Claims Data Details | AB2D Medicare Patient Claims API"
-description: "Explore detailed information on the claims data available with the AB2D API, including diagnoses, procedures, providers, and service utilization."
-permalink: /claims-data-details
+page_title: "Data Dictionary"
+seo_title: "Data Dictionary & Claims Data Details | AB2D Medicare API"
+description: "Explore the AB2D API's Medicare Parts A & B data, sample files, claim identifiers, versions, statuses, and patient identifiers."
+permalink: /data-dictionary
+redirect_from: [/ab2d-data, /claims-data-details]
 in-page-nav: true
 ---
 
-# {{ page.page_title }}
+# Data Dictionary
 
-AB2D and its upstream data source generate and add fields to claims data in an effort to help make managing and providing those claims easier.
+Learn about claims data and how to apply it in context. The AB2D API shares large volumes of enrollee data, including:
+
+<table class="usa-table usa-table--borderless usa-table--stacked margin-bottom-4">
+  <caption class="usa-sr-only">Definitions of Part A and Part B claims data</caption>
+  <thead>
+    <tr>
+      <th scope="col">Data type</th>
+      <th scope="col">Definition</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Medicare Part A claims data</th>
+      <td>
+        Inpatient hospital stays, care in skilled nursing facilities, and hospice care
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Medicare Part B claims data</th>
+      <td>
+        Various doctors' services, outpatient care, medical supplies, and preventive services
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+There are specific [permitted uses]({{ '/about' | relative_url }}) for the data. Visit [Get Started]({{ '/get-started' | relative_url }}) for details on accessing production data and the claims data format.
+
+<div class="grid-row grid-gap margin-y-6 tablet:grid-gap-0 tablet:margin-y-8 desktop:margin-y-10">
+  <div class="grid-col-2 tablet:grid-col-3 text-center">
+    <img src="{{ '/assets/img/book.svg' | relative_url }}" alt="" />
+  </div>
+  <div class="grid-col-fill tablet:grid-col-9">
+    <h2>Data Dictionary</h2>
+    <p>Get a detailed breakdown of data elements provided by AB2D. The Data Dictionary covers both v2 (<a href="https://hl7.org/fhir/R4/" target="_blank" rel="noopener">R4</a>) and v1 (<a href="https://hl7.org/fhir/STU3/" target="_blank" rel="noopener">STU3</a>) of the API.</p>
+    <ul>
+      <li><a href="{{ '/assets/downloads/ab2d-data-dictionary.xlsx' | relative_url }}" data-tealium="download">Data Dictionary {% include sprite.html icon="file_download" class="text-middle" %}</a></li>
+    </ul>
+  </div>
+</div>
+
+<div class="grid-row grid-gap margin-y-6 tablet:grid-gap-0 tablet:margin-y-8 desktop:margin-y-10">
+  <div class="grid-col-2 tablet:grid-col-3 text-center">
+    <img src="{{ '/assets/img/paper.svg' | relative_url }}" alt="" />
+  </div>
+  <div class="grid-col-fill tablet:grid-col-9">
+    <h2>Sample files</h2>
+    <p>Download sample, unformatted <a href="https://github.com/ndjson/ndjson-spec" target="_blank" rel="noopener">NDJSON</a> files. Each line is a <a href="https://www.json.org/json-en.html" target="_blank" rel="noopener">JSON</a> object that can be read with a text editor like the <a href="https://jsonlint.com/" target="_blank" rel="noopener">format viewer</a>.</p>
+    <ul>
+      <li><a href="{{ '/assets/downloads/sample-data-r4.ndjson' | relative_url }}" data-tealium="download">AB2D v2 (recommended) Parts A and B Sample Export (FHIR R4) {% include sprite.html icon="file_download" class="text-middle" %}</a></li>
+      <li><a href="{{ '/assets/downloads/sample-data-stu3.ndjson' | relative_url }}" data-tealium="download">AB2D v1 Parts A and B Sample Export (FHIR STU3) {% include sprite.html icon="file_download" class="text-middle" %}</a></li>
+    </ul>
+  </div>
+</div>
 
 ## Important AB2D claim fields
+
+AB2D and its upstream data source generate and add fields to claims data in an effort to help make managing and providing those claims easier.
 
 <div class="overflow-x-auto" tabindex="0">
   <table class="usa-table usa-table--stacked usa-table--borderless">
@@ -25,7 +81,7 @@ AB2D and its upstream data source generate and add fields to claims data in an e
     <tbody>
       <tr>
         <th data-label="Field" scope="row">
-          <a href="{{ '/claims-data-details' | relative_url }}#identifying-claims-and-claim-versions">Claim Group ID</a>
+          <a href="{{ '/data-dictionary' | relative_url }}#identifying-claims-and-claim-versions">Claim Group ID</a>
         </th>
         <td data-label="Description">
           Unique identifier of a claim which is the same across claim updates. This field can be used to group together a family of claims.
@@ -36,7 +92,7 @@ AB2D and its upstream data source generate and add fields to claims data in an e
       </tr>
       <tr>
         <th data-label="Field" scope="row">
-          <a href="{{ '/claims-data-details' | relative_url }}#identifying-claims-and-claim-versions">Claim ID</a>
+          <a href="{{ '/data-dictionary' | relative_url }}#identifying-claims-and-claim-versions">Claim ID</a>
         </th>
         <td data-label="Description">
           Unique identifier of a single version of a claim. Not the same across updates.
@@ -47,7 +103,7 @@ AB2D and its upstream data source generate and add fields to claims data in an e
       </tr>
       <tr>
         <th data-label="Field" scope="row">
-          <a href="{{ '/claims-data-details' | relative_url }}#claim-status">Claim Status</a>
+          <a href="{{ '/data-dictionary' | relative_url }}#claim-status">Claim Status</a>
         </th>
         <td data-label="Description">
           Current status of the claim, which is either active or cancelled. If the latest version (Claim ID) in a family of claims is cancelled, then the entire claim is cancelled.
@@ -58,7 +114,7 @@ AB2D and its upstream data source generate and add fields to claims data in an e
       </tr>
       <tr>
         <th data-label="Field" scope="row">
-          <a href="{{ '/claims-data-details' | relative_url }}#last-updated">Last Updated</a>
+          <a href="{{ '/data-dictionary' | relative_url }}#last-updated">Last Updated</a>
         </th>
         <td data-label="Description">
           The last time any modification (new version) of a claim was received by AB2D.
@@ -69,7 +125,7 @@ AB2D and its upstream data source generate and add fields to claims data in an e
       </tr>
       <tr>
         <th data-label="Field" scope="row">
-         <a href="{{ '/claims-data-details' | relative_url }}#identifying-patients">Medicare Beneficiary Identifier (MBI)</a>
+         <a href="{{ '/data-dictionary' | relative_url }}#identifying-patients">Medicare Beneficiary Identifier (MBI)</a>
         </th>
         <td data-label="Description">
           Unique identifier for an enrollee or patient across CMS. An MBI can be current or historic.
@@ -84,7 +140,7 @@ AB2D and its upstream data source generate and add fields to claims data in an e
 
 ## The difference between a claim and a claim object
 
-Each claim made by a provider translates into an immutable claim object in AB2D’s upstream data source. Any change to the claim leads to the creation of a completely new claim object. This new claim object “version” along with prior versions are stored by AB2D’s upstream data source and provided by the AB2D API.
+Each claim made by a provider translates into an immutable claim object in AB2D's upstream data source. Any change to the claim leads to the creation of a completely new claim object. This new claim object "version" along with prior versions are stored by AB2D's upstream data source and provided by the AB2D API.
 
 Thus, the AB2D API can/will provide multiple claim objects that map to a single claim made by a provider.
 
@@ -111,7 +167,7 @@ There are 2 primary claim identifiers used to logically identify and map relatio
           Claim Group ID
         </th>
         <td data-label="Description">
-          The unique identification number of the business concept of a claim made by a provider. While each change to a claim will result in a new claim object, each of these “versions” falls under the same Claim Group ID. The Claim Group ID is the parent or common identifier linking related claim object versions.
+          The unique identification number of the business concept of a claim made by a provider. While each change to a claim will result in a new claim object, each of these "versions" falls under the same Claim Group ID. The Claim Group ID is the parent or common identifier linking related claim object versions.
         </td>
       </tr>
       <tr>
@@ -119,7 +175,7 @@ There are 2 primary claim identifiers used to logically identify and map relatio
           Claim ID
         </th>
         <td data-label="Description">
-          The unique identification number of a single claim object “version.” Each change to a claim will result in a new claim object with a unique Claim ID. Each of the related Claim IDs will share a common Claim Group ID. A Claim ID may have multiple Claim Line IDs.
+          The unique identification number of a single claim object "version." Each change to a claim will result in a new claim object with a unique Claim ID. Each of the related Claim IDs will share a common Claim Group ID. A Claim ID may have multiple Claim Line IDs.
         </td>
       </tr>
     </tbody>
@@ -127,7 +183,7 @@ There are 2 primary claim identifiers used to logically identify and map relatio
 
 ## Example claim versions
 
-A claim object enters the AB2D data source on January 1, 2020. This is the first claim object “version” (claim version 1) of the claim to arrive.
+A claim object enters the AB2D data source on January 1, 2020. This is the first claim object "version" (claim version 1) of the claim to arrive.
 
 The claim comes with the following identifiers:
 
@@ -192,7 +248,7 @@ Notice 2 things:
 </div>
 
 ## Claim Group ID
-The Claim Group ID is always 1 of a list of IDs found in the identifier field. The Claim Group ID remains the same between all versions of a claim. It can be used to group together a “family” of claims.
+The Claim Group ID is always 1 of a list of IDs found in the identifier field. The Claim Group ID remains the same between all versions of a claim. It can be used to group together a "family" of claims.
 
 - Format: a positive number
 - Location: found in the eob.identifier list
@@ -264,7 +320,7 @@ For more information: [FHIR Specification for Claim Status](http://hl7.org/fhir/
 
 ## Last Updated
 
-The Last Updated field is a metadata field reflecting the last time the claim object was refreshed. For example, the Last Updated field will change after a claim object’s status changes (e.g., from active to canceled). It shows when AB2D received a change, not when the change was actually made and submitted to Medicare.
+The Last Updated field is a metadata field reflecting the last time the claim object was refreshed. For example, the Last Updated field will change after a claim object's status changes (e.g., from active to canceled). It shows when AB2D received a change, not when the change was actually made and submitted to Medicare.
 
 - Format: ISO datetime with a timezone
 - Location: found in claims metadata (eob.meta.lastUpdated)
@@ -314,7 +370,7 @@ Extensions referring to identifiers will have the following structure:
 - The URL code identifies whether the MBI is currently in use or a historical value.
 - The MBI Identifier System is always the same: http://hl7.org/fhir/sid/us-mbi.
 - The identifier will be located at: extension.valueIdentifier.value.
-- “Value” displays the actual MBI.
+- "Value" displays the actual MBI.
 
 #### Example JSON
 
@@ -330,7 +386,7 @@ Extensions referring to identifiers will have the following structure:
                 }
             }
         ],
-        "system": “http://hl7.org/fhir/sid/us-mbi”,
+        "system": "http://hl7.org/fhir/sid/us-mbi",
         "value": "7S94E00AA00"
     }
 }
@@ -449,7 +505,7 @@ In the example, a single claim will be tracked through several evolutions:
   </table>
 </div>
 
-In the example, 4 exports are run using the <a href="{{ '/query-parameters-v2' | relative_url }}">_since parameter</a> to limit duplicate data. Using the _since parameter alone returns claims data last updated after a specified date and up until the current date.
+In the example, 4 exports are run using the <a href="{{ '/api-reference' | relative_url }}">_since parameter</a> to limit duplicate data. Using the _since parameter alone returns claims data last updated after a specified date and up until the current date.
 
 <div class="overflow-x-auto" tabindex="0">
   <table class="usa-table usa-table--stacked usa-table--borderless">
@@ -663,7 +719,7 @@ Claim version 54689123 is pulled for a second time. Here is why:
 
 Claim version 34543 is pulled for the first time. Here is why:
 
-1. The claim object was received on March 31, 2020. Since there hasn’t been any changes since, the Last Updated field is March 31, 2020 as well.
+1. The claim object was received on March 31, 2020. Since there hasn't been any changes since, the Last Updated field is March 31, 2020 as well.
 2. The claim object is included in the export because the Last Updated date (March 31, 2020) is after the _since parameter date (February 28, 2020).
 
 <div class="overflow-x-auto" tabindex="0">
@@ -784,7 +840,7 @@ In the example, a single claim will be tracked through several evolutions:
       </tbody>
   </table>
 
-  In the example, 2 exports are run using the <a href="{{ '/query-parameters-v2' | relative_url }}">_since parameter</a> to limit duplicate data. Using the _since parameter alone returns claims data last updated after a specified date and up until the current date.
+  In the example, 2 exports are run using the <a href="{{ '/api-reference' | relative_url }}">_since parameter</a> to limit duplicate data. Using the _since parameter alone returns claims data last updated after a specified date and up until the current date.
 
   <table class="usa-table usa-table--stacked usa-table--borderless">
       <thead>
@@ -881,7 +937,7 @@ Claim version 12987987 is pulled for a second time. Here is why:
 
 Claim version 54689123 is pulled for the first time. Here is why:
 
-1. The claim object was received and marked as canceled on February 10, 2020. Since there hasn’t been any changes since, the Last Updated field is February 10, 2020 as well.
+1. The claim object was received and marked as canceled on February 10, 2020. Since there hasn't been any changes since, the Last Updated field is February 10, 2020 as well.
 2. The claim object is included in the export because the Last Updated date (February 10, 2020) is after the _since parameter date (January 31, 2020).
 
 <div class="overflow-x-auto" tabindex="0">
@@ -1070,7 +1126,7 @@ On February 28, 2020, organization XYZ runs an export with a _since parameter da
 
 The export pulls a duplicate of the claim from export 1 as it has the same Claim Group ID (99995), Claim ID (12987987), and Last Updated date (01/01/2020).
 
-The claim was pulled twice because the _since date has not changed in both exports, resulting in an overlap. AB2D recommends following the [incremental export model]({{ '/filter-claims-data-v2' | relative_url }}#incremental-export-model) and using v2 of the API to avoid duplicate claims data.
+The claim was pulled twice because the _since date has not changed in both exports, resulting in an overlap. AB2D recommends following the [incremental export model]({{ '/filtering-claims-data' | relative_url }}#incremental-export-model) and using v2 of the API to avoid duplicate claims data.
 
 <div class="overflow-x-auto" tabindex="0">
   <table class="usa-table usa-table--stacked usa-table--borderless">
@@ -1117,8 +1173,14 @@ The claim was pulled twice because the _since date has not changed in both expor
   </table>
 </div>
 
+## Guides
+
+Learn how to use AB2D and understand enrollees' claims data.
+
+- [How to Filter Claims Data]({{ '/filtering-claims-data' | relative_url }})
+
 ## Next step
 
-Learn how to [filter claims data]({{ '/filter-claims-data-v2' | relative_url }}) using the _since and _until parameters to reduce duplication and speed up job times.
+Learn how to [filter claims data]({{ '/filtering-claims-data' | relative_url }}) using the _since and _until parameters to reduce duplication and speed up job times.
 
 {% include feedback-form.html id="a9031f20" %}

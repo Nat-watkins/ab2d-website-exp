@@ -18,7 +18,7 @@ PACE and MA-PD organizations are not eligible for AB2D production access.
 {% endcapture %}
 {% include alert.html variant="info" text=eligibilityAlert classNames="measure-6" %}
 
-Before you begin, make sure you have tried the API in the [sandbox environment]({{ '/access-sandbox-data' | relative_url }}) and are familiar with the [API workflow]({{ '/api-documentation' | relative_url }}#api-workflow).
+Before you begin, make sure you have tried the API in the [sandbox environment]({{ '/sandbox-guide' | relative_url }}) and are familiar with the [API workflow]({{ '/get-started' | relative_url }}#api-workflow).
 
 <ol class="usa-process-list margin-top-4">
   <li class="usa-process-list__item">
@@ -126,7 +126,7 @@ Before you begin, make sure you have tried the API in the [sandbox environment](
     <span class="usa-tag">Completed by AB2D Data Ops Specialist</span>
     <h3 class="font-sans-sm">Verify sandbox data retrieval</h3>
       <p>
-        The ADOS receives an email with instructions on next steps. They must send the AB2D team the job ID from a successful data export in the sandbox. Learn <a href="{{ '/get-a-bearer-token' | relative_url }}">how to get a bearer token</a> and <a href="{{ '/access-sandbox-data' | relative_url }}">access sandbox data</a>.
+        The ADOS receives an email with instructions on next steps. They must send the AB2D team the job ID from a successful data export in the sandbox. Learn <a href="{{ '/authentication' | relative_url }}">how to get a bearer token</a> and <a href="{{ '/sandbox-guide' | relative_url }}">access sandbox data</a>.
       </p>
     <h3 class="font-sans-sm">Provide your IP addresses</h3>
       <p>
@@ -139,7 +139,7 @@ Before you begin, make sure you have tried the API in the [sandbox environment](
     <span>and</span>
     <span class="usa-tag">Completed by AB2D Data Ops Specialist</span>
     <p>
-      The Attestor receives an email with production credentials. These credentials allow your organization to <a href="{{ '/get-a-bearer-token' | relative_url }}">get a bearer token</a> and <a href="{{ '/access-production-claims-data' | relative_url }}">access production claims data</a>.
+      The Attestor receives an email with production credentials. These credentials allow your organization to <a href="{{ '/authentication' | relative_url }}">get a bearer token</a> and <a href="{{ '/production-guide' | relative_url }}">access production claims data</a>.
     </p>
 
     {% capture phiAlert %}
@@ -155,6 +155,6 @@ Before you begin, make sure you have tried the API in the [sandbox environment](
 
 ## Next step
 
-After receiving your production credentials, follow the guide to [access production claims data]({{ '/access-production-claims-data' | relative_url }}).
+After receiving your production credentials, follow the guide to [access production claims data]({{ '/production-guide' | relative_url }}).
 
 {% include feedback-form.html id="cbddf9b6" %}

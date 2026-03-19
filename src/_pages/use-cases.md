@@ -81,6 +81,6 @@ show-side-nav: false
 
 ## Next step
 
-Ready to try the API? Visit [API Documentation]({{ '/api-documentation' | relative_url }}) to get started, or read the [MTM white paper]({{ '/mtm-white-paper' | relative_url }}) for a deeper look at how AB2D data supports Medication Therapy Management programs.
+Ready to try the API? Visit [API Documentation]({{ '/get-started' | relative_url }}) to get started, or read the [MTM white paper]({{ '/mtm-white-paper' | relative_url }}) for a deeper look at how AB2D data supports Medication Therapy Management programs.
 
 {% include feedback-form.html id="ce6a6aa1" %}
